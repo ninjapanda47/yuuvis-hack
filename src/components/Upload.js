@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Button, Card } from 'react-bootstrap';
+import firebase from '../util/firebase'
+import FilerUploader from 'react-firebase-file-uploader'
 
 export class Upload extends Component {
     render() {
@@ -11,9 +13,10 @@ export class Upload extends Component {
                             <Card.Body>
                                 <Card.Title>Upload receipts</Card.Title>
                                 <Card.Text>
-                                <input type="file" className="file-select" accept="image/*" />
+                                {/* <input type="file" className="file-select" accept="image/*" /> */}
+                                <FilerUploader accept="image/*" storageRef={storageRef} onUploadSuccess={handleUploadSuccess} />
                                 </Card.Text>
-                                <Button variant="primary">Submit</Button>
+                                <Button onClick={handleClick} variant="primary">Submit</Button>
                             </Card.Body>
                         </Card>
                     </Row>
@@ -22,5 +25,18 @@ export class Upload extends Component {
         )
     }
 }
+
+const handleClick = () => {}
+
+const handleUploadSuccess = filename => {
+    firebase
+      .storage()
+      .ref('images')
+      .child(filename)
+      .put()
+  };
+
+const storageService = firebase.storage();
+const storageRef = storageService.ref();
 
 export default Upload
