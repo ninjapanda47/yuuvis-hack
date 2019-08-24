@@ -11,7 +11,8 @@ export class Intro extends Component {
                             <h1>Welcome to Itemize</h1>
                             <p>
                                 A simple application to help you track and itemize all your expenses.
-  </p>
+                            </p>
+                            <p>Joseph was here</p>
                             <p>
                                 <Button variant="primary">Learn more</Button>
                             </p>
