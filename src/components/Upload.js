@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
+const uuidv4 = require("uuid/v4");
 // import { useAlert } from 'react-alert'
 
 
@@ -9,7 +10,8 @@ export class Upload extends Component {
         this.state = {
             expenseType: '',
             amount: '',
-            showSuccess: false
+            filePath: '',
+            title: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -24,7 +26,11 @@ export class Upload extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.setState({ showSuccess: true })
+        const item = this.state
+        console.log(this.state)
+        if (item.title === ''){
+            item.title = uuidv4()
+        }
     }
 
 
@@ -39,18 +45,24 @@ export class Upload extends Component {
                                 <Card.Title>Upload receipts</Card.Title>
                                 <Form style={{ width: '100%' }} onSubmit={this.handleSubmit}>
                                     <Form.Group as={Row} controlId="expenseType" value={this.state.expenseType} onChange={this.handleChange}>
-                                        <Form.Label column sm="3" className="text-left">Expense Type</Form.Label>
+                                        <Form.Label column sm="3" className="text-left">Expense Type*</Form.Label>
                                         <Col sm="9">
                                             <Form.Control type="text" placeholder="meal" />
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row} controlId="amount" value={this.state.amount} onChange={this.handleChange}>
-                                        <Form.Label column sm="3" className="text-left">Amount</Form.Label>
+                                        <Form.Label column sm="3" className="text-left">Amount*</Form.Label>
                                         <Col sm="9">
                                             <Form.Control type="text" placeholder="$10.00" />
                                         </Col>
                                     </Form.Group>
-                                    <Form.Group controlId="title" value={this.state.title} onChange={this.handleChange}>
+                                    <Form.Group as={Row} controlId="title" value={this.state.title} onChange={this.handleChange}>
+                                        <Form.Label column sm="3" className="text-left">Title - optional</Form.Label>
+                                        <Col sm="9">
+                                            <Form.Control type="text" placeholder="Chick fil A" />
+                                        </Col>
+                                    </Form.Group>
+                                    <Form.Group controlId="filePath" value={this.state.filePath} onChange={this.handleChange}>
                                         <Form.Control type="file" accept="image/*" />
                                     </Form.Group>
                                     <div className="col text-center">
