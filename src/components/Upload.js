@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Card } from 'react-bootstrap';
-import firebase from '../util/firebase'
-import FilerUploader from 'react-firebase-file-uploader'
 import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
-import { useAlert } from 'react-alert'
+// import { useAlert } from 'react-alert'
 
 
 export class Upload extends Component {
@@ -30,20 +27,6 @@ export class Upload extends Component {
         this.setState({ showSuccess: true })
     }
 
-    handleClick = () => {}
-
-    handleUploadSuccess = filename => {
-        firebase
-          .storage()
-          .ref('images')
-          .child(filename)
-          .put()
-      };
-
-    storageService = firebase.storage();
-    storageRef = storageService.ref();
-
-
     render() {
 
         return (
@@ -53,8 +36,7 @@ export class Upload extends Component {
                         <Card style={{ width: '50%' }} className="m-auto center">
                             <Card.Body>
                                 <Card.Title>Upload receipts</Card.Title>
-                                {/* <Form style={{ width: '100%' }} onSubmit={this.handleSubmit}> */}
-                                <FilerUploader accept="image/*" storageRef={storageRef} onUploadSuccess={handleUploadSuccess} />
+                                <Form style={{ width: '100%' }} onSubmit={this.handleSubmit}>
                                     <Form.Group as={Row} controlId="expenseType" value={this.state.expenseType} onChange={this.handleChange}>
                                         <Form.Label column sm="3" className="text-left">Expense Type</Form.Label>
                                         <Col sm="9">
@@ -75,6 +57,7 @@ export class Upload extends Component {
                                             Submit
                                         </Button>
                                     </div>
+                                </Form>
                             </Card.Body>
                         </Card>
                     </Row>
