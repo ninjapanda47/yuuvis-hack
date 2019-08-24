@@ -2,6 +2,7 @@ const fs = require('fs')
 const key = 'd50f85d0fa734509be4e4a165a89607e'
 // const baseUrl = 'https://api.yuuvis.io/dms/objects'
 const baseUrl = 'https://api.yuuvis.io/'
+const request = require('request')
 
 function createDocumentMetadata(doc_title, doc_fileName, doc_cid, doc_contentType) {
   return {
@@ -47,7 +48,7 @@ function createImportFormdata(doc_title, doc_fileName, doc_cid, doc_contentType)
   return formData
 }
 
-module.exports.createUpload = async (doc_title, doc_fileName, doc_cid, doc_contentType) => {
+function createImportRequest(doc_title, doc_fileName, doc_cid, doc_contentType) {
   return {
     method: 'POST',
     uri: baseUrl + 'dms/objects/',
@@ -57,4 +58,22 @@ module.exports.createUpload = async (doc_title, doc_fileName, doc_cid, doc_conte
     },
     formData: createImportFormdata(doc_title, doc_fileName, doc_cid, doc_contentType)
   }
+}
+
+const executeRequest = request_object => {
+  return new Promise((resolve, reject) => {
+    request.post(request_object, function callback(err, httpResponse, body) {
+      if (err) reject(err)
+      else {
+        // console.log(httpResponse.statusCode)
+        // console.log(body)
+        resolve({ statusCode: httpResponse.statusCode, body })
+      }
+    })
+  })
+}
+
+module.exports.createUpload = async (doc_title, doc_fileName, doc_cid, doc_contentType) => {
+  var simpleImportRequest = createImportRequest(doc_title, doc_fileName, doc_cid, doc_contentType)
+  return executeRequest(simpleImportRequest)
 }
