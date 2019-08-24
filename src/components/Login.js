@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
-// import { useAlert } from 'react-alert'
+import { NavLink } from 'react-router-dom'
+import * as itemAPI from '../utils/api'
 
-
-export class Upload extends Component {
+export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expenseType: '',
-            amount: '',
-            showSuccess: false
+            username: '',
+            password: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,11 +21,17 @@ export class Upload extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit(event) {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        this.setState({ showSuccess: true })
+        try {
+            const user = this.state
+            const login = await itemAPI.login(user)
+            login.success ? this.props.isloggedin({ isloggedin: true, username: login.user.username }) : this.props.isloggedin({ isloggedin: false, username: null })
+            this.props.history.push("/")
+        } catch (errors) {
+            console.log(errors)
+        }
     }
-
 
     render() {
 
@@ -36,29 +41,27 @@ export class Upload extends Component {
                     <Row className="mt-5">
                         <Card style={{ width: '50%' }} className="m-auto center">
                             <Card.Body>
-                                <Card.Title>Upload receipts</Card.Title>
+                                <Card.Title>Login</Card.Title>
                                 <Form style={{ width: '100%' }} onSubmit={this.handleSubmit}>
-                                    <Form.Group as={Row} controlId="expenseType" value={this.state.expenseType} onChange={this.handleChange}>
-                                        <Form.Label column sm="3" className="text-left">Expense Type</Form.Label>
+                                    <Form.Group as={Row} controlId="username" value={this.state.username} onChange={this.handleChange}>
+                                        <Form.Label column sm="3" className="text-left">Username</Form.Label>
                                         <Col sm="9">
-                                            <Form.Control type="text" placeholder="meal" />
+                                            <Form.Control type="text" placeholder="Username" />
                                         </Col>
                                     </Form.Group>
-                                    <Form.Group as={Row} controlId="amount" value={this.state.amount} onChange={this.handleChange}>
-                                        <Form.Label column sm="3" className="text-left">Amount</Form.Label>
+                                    <Form.Group as={Row} controlId="password" value={this.state.password} onChange={this.handleChange}>
+                                        <Form.Label column sm="3" className="text-left">Password</Form.Label>
                                         <Col sm="9">
-                                            <Form.Control type="text" placeholder="$10.00" />
+                                            <Form.Control type="password" placeholder="password" />
                                         </Col>
                                     </Form.Group>
-                                    <Form.Group controlId="title" value={this.state.title} onChange={this.handleChange}>
-                                        <Form.Control type="file" accept="image/*" />
-                                    </Form.Group>
-                                    <div className="col text-center">
+                                    <div className="col text-center mb-2">
                                         <Button variant="primary" type="submit" >
                                             Submit
                     </Button>
                                     </div>
                                 </Form>
+                                <Card.Text>Don't have an account yet?  Sign up <NavLink to="/signup">here.</NavLink></Card.Text>
                             </Card.Body>
                         </Card>
                     </Row>
@@ -68,4 +71,4 @@ export class Upload extends Component {
     }
 }
 
-export default Upload
+export default Login
