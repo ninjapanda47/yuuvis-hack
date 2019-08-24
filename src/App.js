@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import NavBar from './components/NavBar'
 import Upload from './components/Upload'
+import Search from './components/Search'
 import Intro from './components/Intro'
 import Footer from './components/Footer'
 import { Route, Switch } from "react-router-dom";
@@ -18,6 +19,7 @@ export class App extends Component {
             path="/"
             component={Intro} />
           <Route path='/upload' component={Upload} />
+          <Route path='/search' component={Search} />
         </Switch>
       </div>
     )
