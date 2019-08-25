@@ -1,6 +1,6 @@
 const dv = require('dv');
 const fs = require('fs');
-const image = new dv.Image('jpg', fs.readFileSync('../../testdata/kris-test.jpg'));
+const image = new dv.Image('jpg', fs.readFileSync('../testdata/kris-test.jpg'));
 const tesseract = new dv.Tesseract('eng', image);
 const baseUrl = 'https://api.yuuvis.io/'
 const request = require('request')
