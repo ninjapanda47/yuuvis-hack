@@ -39,8 +39,6 @@ export class Upload extends Component {
 
     notify = () => toast("Upload Success!", { className: 'toastSuccess' });
 
-    closeToast = () => { this.setState({ showSuccess: false }) }
-
 
     render() {
 
@@ -76,7 +74,7 @@ export class Upload extends Component {
                                     <div className="col text-center">
                                         <Button variant="primary" type="submit" >
                                             Submit
-                    </Button>
+                                        </Button>
                                     </div>
                                 </Form>
                             </Card.Body>
