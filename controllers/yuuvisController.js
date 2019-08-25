@@ -58,7 +58,6 @@ module.exports = {
      })
 
      if (receipts) {
-      // const results = receipts.map(async receipt => await createRequest(receipt.yuuvisId))
       let results = []
       for (let receipt of receipts) {
         results.push(await createRequest(receipt.yuuvisId))
