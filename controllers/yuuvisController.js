@@ -1,15 +1,20 @@
 const { createUpload } = require('../util/upload')
 const { createRequest } = require('../util/retrieve')
+const { createReceipt } = require('../util/ocr')
 const { ReceiptModel } = require('../models')
 const contentType = 'document'
-const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
-
-
+const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/kris-test.jpg'
 
 const title = 'testing02'
 const cid = 'cidtest'
 
 module.exports = {
+  // create document from OCR data
+  // const receipt = await createReceipt(image)
+  // if (upload.statusCode === 200) {
+  //   const parsedBody = JSON.parse(receipt.body)
+  // }
+
   store: async (req, res) => {
     const amount = req.body.amount
     const expenseType = req.body.expenseType
