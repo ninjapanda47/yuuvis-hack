@@ -42,8 +42,8 @@ module.exports = {
     }
   },
   get: async (req, res) => {
-    const result = await createRequest('ada52788-d558-44e5-940a-0fefaddb3fda')
-    // console.log('Result: ', result)
+    // const result = await createRequest('ada52788-d558-44e5-940a-0fefaddb3fda')
+    // // console.log('Result: ', result)
   },
   search: async (req, res) => {
     const query = req.body.query
@@ -58,10 +58,14 @@ module.exports = {
      })
 
      if (receipts) {
-      
+      // const results = receipts.map(async receipt => await createRequest(receipt.yuuvisId))
+      let results = []
+      for (let receipt of receipts) {
+        results.push(await createRequest(receipt.yuuvisId))
+      }
       res.status(200).send({
         success: true,
-        receipts
+        results
       })
      } else {
       res.status(400)
