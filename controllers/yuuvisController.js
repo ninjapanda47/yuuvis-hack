@@ -28,6 +28,6 @@ module.exports = {
   },
   get: async (req, res) => {
     const result = await createRequest('ada52788-d558-44e5-940a-0fefaddb3fda')
-    console.log('Result', result)
+    // console.log('Result: ', result)
   }
 }
