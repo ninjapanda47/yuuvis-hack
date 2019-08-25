@@ -33,3 +33,15 @@ export const login = user =>
         body: JSON.stringify(user)
     }).then(res => res.json())
         .then(data => data);
+
+//upload to yuuvis
+export const upload = item =>
+    fetch(`${api}/yuuvis/store`, {
+        method: "POST",
+        headers: {
+            ...headers,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(item)
+    }).then(res => res.json())
+        .then(data => data);

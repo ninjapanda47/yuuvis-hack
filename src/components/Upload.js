@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, Form, Toast } from 'react-bootstrap';
+import * as itemAPI from '../utils/api'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const uuidv4 = require("uuid/v4");
-// import { useAlert } from 'react-alert'
-
 
 export class Upload extends Component {
     constructor(props) {
@@ -24,14 +25,21 @@ export class Upload extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit(event) {
+    handleSubmit = async (event) => {
         event.preventDefault();
         const item = this.state
         console.log(this.state)
-        if (item.title === ''){
+        if (item.title === '') {
             item.title = uuidv4()
         }
+        // const upload = await itemAPI.upload(item)
+        // upload.success ? 
+        this.notify()
     }
+
+    notify = () => toast("Upload Success!", { className: 'toastSuccess' });
+
+    closeToast = () => { this.setState({ showSuccess: false }) }
 
 
     render() {
@@ -62,7 +70,7 @@ export class Upload extends Component {
                                             <Form.Control type="text" placeholder="Chick fil A" />
                                         </Col>
                                     </Form.Group>
-                                    <Form.Group controlId="filePath" value={this.state.filePath} onChange={this.handleChange}>
+                                    <Form.Group controlId="filePath" value={this.state.ContainerfilePath} onChange={this.handleChange}>
                                         <Form.Control type="file" accept="image/*" />
                                     </Form.Group>
                                     <div className="col text-center">
@@ -75,6 +83,7 @@ export class Upload extends Component {
                         </Card>
                     </Row>
                 </Container>
+                <ToastContainer />
             </div>
         )
     }
