@@ -45,3 +45,15 @@ export const upload = item =>
         body: JSON.stringify(item)
     }).then(res => res.json())
         .then(data => data);
+
+//Search receipts
+export const search = query =>
+    fetch(`${api}/yuuvis/search`, {
+        method: "POST",
+        headers: {
+            ...headers,
+            "Content-Type": "application/json"
+        },
+        body: query
+    }).then(res => res.json())
+        .then(data => data);
