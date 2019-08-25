@@ -1,18 +1,14 @@
 const { createUpload } = require('../util/upload')
 const { createRequest } = require('../util/retrieve')
 const { ReceiptModel } = require('../models')
-const uuidv4 = require("uuid/v4");
-// const contentType = 'document'
-// const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
-
-// const title = 'testing02'
-// const cid = 'cidtest'
+const uuidv4 = require('uuid/v4')
+// const fileName = '/Users/kdoromal/Desktop/yuuvis/yuuvis-hack/testdata/money-bag.png'
 
 module.exports = {
   store: async (req, res) => {
     const amount = req.body.amount
     const expenseType = req.body.expenseType
-    const fileName = req.body.filePath
+    const fileName = __dirname.replace('controllers', 'testdata/') + req.body.filePath
     const title = req.body.title
     const cid = uuidv4()
     const contentType = 'document'
@@ -53,12 +49,7 @@ module.exports = {
     const query = req.body.query
 
     const receipts = await ReceiptModel.find({
-      $or: [
-        { expenseType: query },
-        { amount: query },
-        { geoLocation: query },
-        { yuuvisId: query }
-      ]
+      $or: [{ expenseType: query }, { amount: query }, { geoLocation: query }, { yuuvisId: query }]
     })
 
     if (receipts) {
