@@ -13,3 +13,13 @@
   padding: 10px;
   text-align: center
 }
+
+.red {
+  color: red;
+}
+
+.toastSuccess {
+  color: #95A5A6;
+  background-color: white;
+  font-size: 2em;
+}

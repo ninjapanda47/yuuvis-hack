@@ -20,9 +20,7 @@ export class App extends Component {
   }
 
   checkUserLogin = ({ isloggedin, username }) => {
-    console.log('making sure this runs')
     isloggedin ? this.setState({ isloggedin: true, username: username }) : this.setState({ isloggedin: false })
-    console.log('check state', this.state)
   }
 
   render() {
