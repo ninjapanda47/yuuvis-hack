@@ -3,7 +3,11 @@ import { Container, Row, Col, Button, Card, Form, Toast } from 'react-bootstrap'
 import * as itemAPI from '../utils/api'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import firebase from '../firebase.js'
 const uuidv4 = require("uuid/v4");
+const storageService = firebase.storage();
+const storageRef = storageService.ref();
+
 
 export class Upload extends Component {
     constructor(props) {
@@ -25,6 +29,22 @@ export class Upload extends Component {
         this.setState({ [name]: value });
     }
 
+    onChangeHandler = (event) => {
+        const selectedFile = event.target.files[0]
+        // storageRef.child(`images/${selectedFile.name}`).put(selectedFile).then((snapshot) => {
+        //     snapshot.ref.getDownloadURL().then((downloadURL) => {
+        //         this.setState({ filePath: downloadURL })
+        //         console.log("File available at", downloadURL);
+        //     });
+        // })
+        // const path = `${uploadTask.location_.bucket}/${uploadTask.location_.path_}`
+        console.log(selectedFile)
+        this.setState({
+            filePath: selectedFile
+        })
+
+    }
+
     handleSubmit = async (event) => {
         event.preventDefault();
         const item = this.state
@@ -32,12 +52,13 @@ export class Upload extends Component {
         if (item.title === '') {
             item.title = uuidv4()
         }
-        // const upload = await itemAPI.upload(item)
-        // upload.success ? 
-        this.notify()
+        const upload = await itemAPI.upload(item)
+        console.log('upload:', upload)
+        upload.success ? this.notifySuccess() : this.notifyError()
     }
 
-    notify = () => toast("Upload Success!", { className: 'toastSuccess' });
+    notifySuccess = () => toast("Upload Success!", { className: 'toastSuccess' });
+    notifyError = () => toast("Upload was unsuccessful!", { className: 'red' });
 
 
     render() {
@@ -68,7 +89,7 @@ export class Upload extends Component {
                                             <Form.Control type="text" placeholder="Chick fil A" />
                                         </Col>
                                     </Form.Group>
-                                    <Form.Group controlId="filePath" value={this.state.ContainerfilePath} onChange={this.handleChange}>
+                                    <Form.Group controlId="filePath" value={this.state.ContainerfilePath} onChange={this.onChangeHandler}>
                                         <Form.Control type="file" accept="image/*" />
                                     </Form.Group>
                                     <div className="col text-center">
