@@ -8,8 +8,8 @@ const executeRequest = request_object => {
     request.get(request_object, function callback(err, httpResponse, body) {
       if (err) reject(err)
       else {
-        console.log(httpResponse.statusCode)
-        console.log(body)
+        // console.log(httpResponse.statusCode)
+        // console.log(body)
         resolve({
           statusCode: httpResponse.statusCode,
           body
