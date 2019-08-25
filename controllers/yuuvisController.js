@@ -1,18 +1,21 @@
 const { createUpload } = require('../util/upload')
 const { createRequest } = require('../util/retrieve')
 const { ReceiptModel } = require('../models')
-const contentType = 'document'
-const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
+const uuidv4 = require("uuid/v4");
+// const contentType = 'document'
+// const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
 
-
-
-const title = 'testing02'
-const cid = 'cidtest'
+// const title = 'testing02'
+// const cid = 'cidtest'
 
 module.exports = {
   store: async (req, res) => {
     const amount = req.body.amount
     const expenseType = req.body.expenseType
+    const fileName = req.body.filePath
+    const title = req.body.title
+    const cid = uuidv4()
+    const contentType = 'document'
 
     // doc_title, doc_fileName, doc_cid, doc_contentType
     const upload = await createUpload(title, fileName, cid, contentType)
@@ -25,7 +28,8 @@ module.exports = {
       const newReceipt = await new ReceiptModel({
         amount,
         expenseType,
-        yuuvisId: id[0]
+        yuuvisId: id[0],
+        date: new Date()
       })
 
       newReceipt.save(err => {
@@ -48,27 +52,32 @@ module.exports = {
   search: async (req, res) => {
     const query = req.body.query
 
-    const receipts = await ReceiptModel.find({ 
+    const receipts = await ReceiptModel.find({
       $or: [
         { expenseType: query },
         { amount: query },
         { geoLocation: query },
         { yuuvisId: query }
       ]
-     })
+    })
 
+    if (receipts) {
+
+<<<<<<< HEAD
+=======
      if (receipts) {
       // const results = receipts.map(async receipt => await createRequest(receipt.yuuvisId))
       let results = []
       for (let receipt of receipts) {
         results.push(await createRequest(receipt.yuuvisId))
       }
+>>>>>>> master
       res.status(200).send({
         success: true,
         results
       })
-     } else {
+    } else {
       res.status(400)
-     }
+    }
   }
 }

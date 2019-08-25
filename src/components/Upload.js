@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
-// import { useAlert } from 'react-alert'
+import { Container, Row, Col, Button, Card, Form, Toast } from 'react-bootstrap';
+import * as itemAPI from '../utils/api'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import firebase from '../firebase.js'
+const uuidv4 = require("uuid/v4");
+const storageService = firebase.storage();
+const storageRef = storageService.ref();
 
 
 export class Upload extends Component {
@@ -9,7 +15,8 @@ export class Upload extends Component {
         this.state = {
             expenseType: '',
             amount: '',
-            showSuccess: false
+            filePath: '',
+            title: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,10 +29,37 @@ export class Upload extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        this.setState({ showSuccess: true })
+    onChangeHandler = (event) => {
+        const selectedFile = event.target.files[0]
+        // storageRef.child(`images/${selectedFile.name}`).put(selectedFile).then((snapshot) => {
+        //     snapshot.ref.getDownloadURL().then((downloadURL) => {
+        //         this.setState({ filePath: downloadURL })
+        //         console.log("File available at", downloadURL);
+        //     });
+        // })
+        // const path = `${uploadTask.location_.bucket}/${uploadTask.location_.path_}`
+        console.log(selectedFile)
+        this.setState({
+            filePath: selectedFile
+        })
+
     }
+
+    handleSubmit = async (event) => {
+        event.preventDefault();
+        const item = this.state
+        console.log(this.state)
+        if (item.title === '') {
+            item.title = uuidv4()
+        }
+        const upload = await itemAPI.upload(item)
+        console.log('upload:', upload)
+        upload.success ? this.notifySuccess() : this.notifyError()
+    }
+
+    notifySuccess = () => toast("Upload Success!", { className: 'toastSuccess' });
+    notifyError = () => toast("Upload was unsuccessful!", { className: 'red' });
+
 
     render() {
 
@@ -38,18 +72,24 @@ export class Upload extends Component {
                                 <Card.Title>Upload receipts</Card.Title>
                                 <Form style={{ width: '100%' }} onSubmit={this.handleSubmit}>
                                     <Form.Group as={Row} controlId="expenseType" value={this.state.expenseType} onChange={this.handleChange}>
-                                        <Form.Label column sm="3" className="text-left">Expense Type</Form.Label>
+                                        <Form.Label column sm="3" className="text-left">Expense Type*</Form.Label>
                                         <Col sm="9">
                                             <Form.Control type="text" placeholder="meal" />
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row} controlId="amount" value={this.state.amount} onChange={this.handleChange}>
-                                        <Form.Label column sm="3" className="text-left">Amount</Form.Label>
+                                        <Form.Label column sm="3" className="text-left">Amount*</Form.Label>
                                         <Col sm="9">
                                             <Form.Control type="text" placeholder="$10.00" />
                                         </Col>
                                     </Form.Group>
-                                    <Form.Group controlId="title" value={this.state.title} onChange={this.handleChange}>
+                                    <Form.Group as={Row} controlId="title" value={this.state.title} onChange={this.handleChange}>
+                                        <Form.Label column sm="3" className="text-left">Title - optional</Form.Label>
+                                        <Col sm="9">
+                                            <Form.Control type="text" placeholder="Chick fil A" />
+                                        </Col>
+                                    </Form.Group>
+                                    <Form.Group controlId="filePath" value={this.state.ContainerfilePath} onChange={this.onChangeHandler}>
                                         <Form.Control type="file" accept="image/*" />
                                     </Form.Group>
                                     <div className="col text-center">
@@ -62,6 +102,7 @@ export class Upload extends Component {
                         </Card>
                     </Row>
                 </Container>
+                <ToastContainer />
             </div>
         )
     }
