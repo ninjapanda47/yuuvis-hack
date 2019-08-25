@@ -1,7 +1,10 @@
 const { createUpload } = require('../util/upload')
+const { createRequest } = require('../util/retrieve')
 const { ReceiptModel } = require('../models')
 const contentType = 'document'
-const fileName = '/Users/mterry/Desktop/code/hackathons/yuuvis-hack/testdata/money-bag.png'
+const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
+
+
 
 const title = 'testing02'
 const cid = 'cidtest'
@@ -37,6 +40,10 @@ module.exports = {
     } else {
       throw new Error('error in uploading')
     }
+  },
+  get: async (req, res) => {
+    const result = await createRequest('ada52788-d558-44e5-940a-0fefaddb3fda')
+    // console.log('Result: ', result)
   },
   search: async (req, res) => {
     const query = req.body.query

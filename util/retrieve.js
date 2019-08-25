@@ -1,17 +1,30 @@
-const fs = require('fs')
 const key = 'd50f85d0fa734509be4e4a165a89607e'
+const objectId = 'ada52788-d558-44e5-940a-0fefaddb3fda'
+const baseUrl = 'https://api.yuuvis.io/'
+const request = require('request')
 
-String objectId = "1234567890"; //example-objectId
-Request metadataRequest = new Request.Builder()
-  .header("Ocp-Apim-Subscription-Key", key)
-  .url(baseUrl + "/dms/objects/" + objectId)
-  .get().build();
+const executeRequest = request_object => {
+  return new Promise((resolve, reject) => {
+    request.get(request_object, function callback(err, httpResponse, body) {
+      if (err) reject(err)
+      else {
+        console.log(httpResponse.statusCode)
+        console.log(body)
+        resolve({
+          statusCode: httpResponse.statusCode,
+          body
+        })
+      }
+    })
+  })
+}
 
-Response metadataResponse = client.newCall(metadataRequest).execute();
-String metadataResponseString = metadataResponse.body().string();
-
-
-Request contentRequest = new Request.Builder()
-  .header("Ocp-Apim-Subscription-Key", key)
-  .url(baseUrl + "/dms/objects/" + objectId + "/contents/file")
-  .get().build();
+module.exports.createRequest = async (objectId) => {
+  return executeRequest({
+    method: 'GET',
+    uri: baseUrl + 'dms/objects/' + objectId + '/contents/file',
+    headers: {
+      'Ocp-Apim-Subscription-Key': key
+    }
+  })
+}
