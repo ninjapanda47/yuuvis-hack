@@ -27,7 +27,6 @@ export class SignUp extends Component {
         event.preventDefault();
         const user = this.state
         itemAPI.addUser(user).then(data => { console.log(data) })
-        console.log(user)
         this.props.history.push("/login")
     }
 
