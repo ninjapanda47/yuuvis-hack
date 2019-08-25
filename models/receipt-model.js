@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ReceiptSchema = new Schema({
-  id: String,
+  yuuvisId: String,
   date: Date,
   expenseType: String,
   geoLocation: String,
-  amount: Number
+  amount: String
 })
 
 const Receipt = mongoose.model('Receipt', ReceiptSchema)

@@ -27,7 +27,6 @@ export class Upload extends Component {
         this.setState({ showSuccess: true })
     }
 
-
     render() {
 
         return (
@@ -56,7 +55,7 @@ export class Upload extends Component {
                                     <div className="col text-center">
                                         <Button variant="primary" type="submit" >
                                             Submit
-                    </Button>
+                                        </Button>
                                     </div>
                                 </Form>
                             </Card.Body>

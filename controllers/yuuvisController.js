@@ -11,16 +11,31 @@ const cid = 'cidtest'
 
 module.exports = {
   store: async (req, res) => {
+    const amount = req.body.amount
+    const expenseType = req.body.expenseType
+
     // doc_title, doc_fileName, doc_cid, doc_contentType
     const upload = await createUpload(title, fileName, cid, contentType)
     if (upload.statusCode === 200) {
       const parsedBody = JSON.parse(upload.body)
-      const ids = parsedBody.objects.map(item => {
+      const id = parsedBody.objects.map(item => {
         return item.properties['enaio:objectId'].value
       })
-      res.status(200).send({
-        success: true,
-        ids: ids
+
+      const newReceipt = await new ReceiptModel({
+        amount,
+        expenseType,
+        yuuvisId: id[0]
+      })
+
+      newReceipt.save(err => {
+        if (err) {
+          res.status(400)
+        }
+        res.status(200).send({
+          success: true,
+          receipt: newReceipt
+        })
       })
     } else {
       throw new Error('error in uploading')
@@ -29,5 +44,27 @@ module.exports = {
   get: async (req, res) => {
     const result = await createRequest('ada52788-d558-44e5-940a-0fefaddb3fda')
     // console.log('Result: ', result)
+  },
+  search: async (req, res) => {
+    const query = req.body.query
+
+    const receipts = await ReceiptModel.find({ 
+      $or: [
+        { expenseType: query },
+        { amount: query },
+        { geoLocation: query },
+        { yuuvisId: query }
+      ]
+     })
+
+     if (receipts) {
+      
+      res.status(200).send({
+        success: true,
+        receipts
+      })
+     } else {
+      res.status(400)
+     }
   }
 }
