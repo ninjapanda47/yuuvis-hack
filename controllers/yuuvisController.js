@@ -15,14 +15,14 @@ module.exports = {
     const upload = await createUpload(title, fileName, cid, contentType)
     if (upload.statusCode === 200) {
       const parsedBody = JSON.parse(upload.body)
-      const ids = parsedBody.objects.map(item => {
+      const id = parsedBody.objects.map(item => {
         return item.properties['enaio:objectId'].value
       })
 
       const newReceipt = await new ReceiptModel({
         amount,
         expenseType,
-        uploadId: ids
+        yuuvisId: id[0]
       })
 
       newReceipt.save(err => {
@@ -42,12 +42,22 @@ module.exports = {
     const query = req.body.query
 
     const receipts = await ReceiptModel.find({ 
-      $and: [
-        { $or: { expenseType: query }},
-        { $or: { amount: query }},
-        { $or: { geoLocation: query }}
+      $or: [
+        { expenseType: query },
+        { amount: query },
+        { geoLocation: query },
+        { yuuvisId: query }
       ]
      })
+
+     if (receipts) {
+       res.status(200).send({
+         success: true,
+         receipts
+       })
+     } else {
+       res.status(400)
+     }
     // const retrival = await axios()
   }
 }
