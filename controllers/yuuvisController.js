@@ -1,7 +1,10 @@
 const { createUpload } = require('../util/upload')
+const { createRequest } = require('../util/retrieve')
 const { ReceiptModel } = require('../models')
 const contentType = 'document'
-const fileName = '/Users/kdoromal/Desktop/yuuvis/yuuvis-hack/testdata/money-bag.png'
+const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
+
+
 
 const title = 'testing02'
 const cid = 'cidtest'
@@ -24,6 +27,7 @@ module.exports = {
     }
   },
   get: async (req, res) => {
-    // const retrival = await axios()
+    const result = await createRequest('ada52788-d558-44e5-940a-0fefaddb3fda')
+    console.log('Result', result)
   }
 }
