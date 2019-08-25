@@ -33,7 +33,8 @@ export const upload = item =>
     fetch(`${api}/yuuvis/store`, {
         method: "POST",
         headers: {
-            ...headers
+            ...headers,
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(item)
     }).then(res => res.json())

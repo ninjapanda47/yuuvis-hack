@@ -11,6 +11,7 @@ module.exports = {
     const userId = response.user._id
     const amount = req.body.amount
     const expenseType = req.body.expenseType
+    console.log('filePath', req.body.filePath)
     const fileName = __dirname.replace('controllers', 'testdata/') + req.body.filePath
     const title = req.body.title
     const cid = uuidv4()
@@ -73,12 +74,11 @@ module.exports = {
      if (receipts) {
       let results = []
       for (let receipt of receipts) {
-        results.push(await createRequest(receipt.yuuvisId))
+        results.push({ yuuvisResponse: await createRequest(receipt.yuuvisId), receipt })
       }
       res.status(200).send({
         success: true,
-        results,
-        receipts
+        results
       })
     } else {
       res.status(400)

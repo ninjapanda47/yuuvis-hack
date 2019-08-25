@@ -9,9 +9,7 @@ export class Search extends Component {
         super(props);
         this.state = {
             search: '',
-            fromDate: undefined,
-            toDate: undefined,
-            results: []
+            results: { results: [] }
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -39,10 +37,11 @@ export class Search extends Component {
         event.preventDefault();
         const results = await itemAPI.search(this.state.search)
         this.setState({ results: results })
+        console.log('results', results)
     }
     render() {
 
-        const showResults = this.state.results.length > 0 ? this.state.results.map(result => <Card></Card>) : null
+        const showResults = this.state.results.length > 0 ? this.state.results.map(result => <Card>{result}</Card>) : null
         return (
             <div>
                 <Container fluid className="m-0">

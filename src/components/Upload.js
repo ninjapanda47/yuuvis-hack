@@ -40,7 +40,6 @@ export class Upload extends Component {
             item.title = uuidv4()
         }
         const upload = await itemAPI.upload(item)
-        console.log('upload:', upload)
         upload.success ? this.notifySuccess() : this.notifyError()
     }
 
