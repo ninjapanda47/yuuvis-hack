@@ -33,20 +33,19 @@ export const upload = item =>
     fetch(`${api}/yuuvis/store`, {
         method: "POST",
         headers: {
-            ...headers,
-            "Content-Type": "application/json"
+            ...headers
         },
         body: JSON.stringify(item)
     }).then(res => res.json())
         .then(data => data);
 
-//search
-export const search = item =>
+//Search receipts
+export const search = query =>
     fetch(`${api}/yuuvis/search`, {
         method: "POST",
         headers: {
             ...headers
         },
-        body: JSON.stringify(item)
+        body: query
     }).then(res => res.json())
         .then(data => data);

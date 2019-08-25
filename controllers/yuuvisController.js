@@ -1,13 +1,9 @@
 const { createUpload } = require('../util/upload')
 const { createRequest } = require('../util/retrieve')
 const { ReceiptModel } = require('../models')
-const uuidv4 = require("uuid/v4");
+const uuidv4 = require('uuid/v4')
 const { verifyToken } = require('../util/token')
-// const contentType = 'document'
-const fileName = '/Users/mterry/Desktop/test.pdf'
-
-const title = 'testing02'
-// const cid = 'cidtest'
+// const fileName = '/Users/kdoromal/Desktop/yuuvis/yuuvis-hack/testdata/money-bag.png'
 
 module.exports = {
   store: async (req, res) => {
@@ -15,8 +11,8 @@ module.exports = {
     const userId = response.user._id
     const amount = req.body.amount
     const expenseType = req.body.expenseType
-    // const fileName = req.body.filePath
-    // const title = req.body.title
+    const fileName = __dirname.replace('controllers', 'testdata/') + req.body.filePath
+    const title = req.body.title
     const cid = uuidv4()
     const contentType = 'document'
 

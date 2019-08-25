@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
+import { Container, Row, Button, Card, Form } from 'react-bootstrap';
 import * as itemAPI from '../utils/api'
 
 export class Search extends Component {
@@ -20,15 +20,14 @@ export class Search extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit = async event => {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        const search = this.state.search
-        const response = await itemAPI.search(search)
-        this.state.results.push(response)
-        console.log('response', this.state.results)
-
+        const results = await itemAPI.search(this.state.search)
+        this.setState({ results: results })
     }
     render() {
+
+        const showResults = this.state.results.length > 0 ? this.state.results.map(result => <Card></Card>) : null
         return (
             <div>
                 <Container fluid className="m-0">
@@ -41,9 +40,7 @@ export class Search extends Component {
                         </Form>
                     </Row>
                     <Row>
-                        <div>
-                            {this.state.results}
-                        </div>
+                        {showResults}
                     </Row>
                 </Container>
 
