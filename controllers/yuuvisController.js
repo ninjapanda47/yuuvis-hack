@@ -38,7 +38,7 @@ module.exports = {
       throw new Error('error in uploading')
     }
   },
-  get: async (req, res) => {
+  search: async (req, res) => {
     const query = req.body.query
 
     const receipts = await ReceiptModel.find({ 
@@ -51,13 +51,13 @@ module.exports = {
      })
 
      if (receipts) {
-       res.status(200).send({
-         success: true,
-         receipts
-       })
+      
+      res.status(200).send({
+        success: true,
+        receipts
+      })
      } else {
-       res.status(400)
+      res.status(400)
      }
-    // const retrival = await axios()
   }
 }
