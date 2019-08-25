@@ -39,6 +39,15 @@ module.exports = {
     }
   },
   get: async (req, res) => {
+    const query = req.body.query
+
+    const receipts = await ReceiptModel.find({ 
+      $and: [
+        { $or: { expenseType: query }},
+        { $or: { amount: query }},
+        { $or: { geoLocation: query }}
+      ]
+     })
     // const retrival = await axios()
   }
 }
