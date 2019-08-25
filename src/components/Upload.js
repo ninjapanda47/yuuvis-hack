@@ -61,7 +61,12 @@ export class Upload extends Component {
                                     <Form.Group as={Row} controlId="expenseType" value={this.state.expenseType} onChange={this.handleChange}>
                                         <Form.Label column sm="3" className="text-left">Expense Type*</Form.Label>
                                         <Col sm="9">
-                                            <Form.Control type="text" placeholder="meal" />
+                                            <Form.Control as="select">
+                                                <option>Meal</option>
+                                                <option>Travel</option>
+                                                <option>Entertainment</option>
+                                                <option>MISC</option>
+                                            </Form.Control>
                                         </Col>
                                     </Form.Group>
                                     <Form.Group as={Row} controlId="amount" value={this.state.amount} onChange={this.handleChange}>
