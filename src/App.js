@@ -42,7 +42,7 @@ export class App extends Component {
             path="/login"
             render={props => <Login {...props} isloggedin={this.checkUserLogin} />}
           />
-          <Route path='/signup' component={SignUp} />
+          <Route path='/signup' render={props => <SignUp {...props} isloggedin={this.checkUserLogin} />} />
         </Switch>
       </div>
     )

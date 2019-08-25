@@ -27,6 +27,7 @@ export class Login extends Component {
             const user = this.state
             const login = await itemAPI.login(user)
             login.success ? this.props.isloggedin({ isloggedin: true, username: login.user.username }) : this.props.isloggedin({ isloggedin: false, username: null })
+            localStorage.token = login.token
             this.props.history.push("/")
         } catch (errors) {
             console.log(errors)

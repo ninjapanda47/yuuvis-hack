@@ -2,18 +2,21 @@ const { createUpload } = require('../util/upload')
 const { createRequest } = require('../util/retrieve')
 const { ReceiptModel } = require('../models')
 const uuidv4 = require("uuid/v4");
+const { verifyToken } = require('../util/token')
 // const contentType = 'document'
-// const fileName = '/Users/josephkohatsu/Desktop/Yuuvis/yuuvis-hack/testdata/money-bag.png'
+const fileName = '/Users/mterry/Desktop/test.pdf'
 
-// const title = 'testing02'
+const title = 'testing02'
 // const cid = 'cidtest'
 
 module.exports = {
   store: async (req, res) => {
+    const response = await verifyToken(req.headers.authorization)
+    const userId = response.user._id
     const amount = req.body.amount
     const expenseType = req.body.expenseType
-    const fileName = req.body.filePath
-    const title = req.body.title
+    // const fileName = req.body.filePath
+    // const title = req.body.title
     const cid = uuidv4()
     const contentType = 'document'
 
@@ -24,8 +27,8 @@ module.exports = {
       const id = parsedBody.objects.map(item => {
         return item.properties['enaio:objectId'].value
       })
-
       const newReceipt = await new ReceiptModel({
+        userId,
         amount,
         expenseType,
         yuuvisId: id[0],
@@ -51,29 +54,35 @@ module.exports = {
   },
   search: async (req, res) => {
     const query = req.body.query
+    const response = await verifyToken(req.headers.authorization)
+    const userId = response.user._id
 
     const receipts = await ReceiptModel.find({
-      $or: [
-        { expenseType: query },
-        { amount: query },
-        { geoLocation: query },
-        { yuuvisId: query }
+      $and: [
+        {
+          $or: [{ userId }]
+        },
+        { 
+          $or: [
+            { expenseType: query },
+            { amount: query },
+            { geoLocation: query },
+            { yuuvisId: query }
+          ]
+        }
+
       ]
     })
 
-    if (receipts) {
-
-<<<<<<< HEAD
-=======
      if (receipts) {
       let results = []
       for (let receipt of receipts) {
         results.push(await createRequest(receipt.yuuvisId))
       }
->>>>>>> master
       res.status(200).send({
         success: true,
-        results
+        results,
+        receipts
       })
     } else {
       res.status(400)

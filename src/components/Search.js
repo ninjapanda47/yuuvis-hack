@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
+import * as itemAPI from '../utils/api'
 
 export class Search extends Component {
     constructor(props) {
@@ -15,12 +16,17 @@ export class Search extends Component {
 
     handleChange(event) {
         let value = event.target.value
-        let name = event.target.id
+        let name = event.target.name
         this.setState({ [name]: value });
     }
 
-    handleSubmit(event) {
+    handleSubmit = async event => {
         event.preventDefault();
+        const search = this.state.search
+        const response = await itemAPI.search(search)
+        this.state.results.push(response)
+        console.log('response', this.state.results)
+
     }
     render() {
         return (
@@ -29,13 +35,15 @@ export class Search extends Component {
                     <Row className="m-2">
                         <Form style={{ width: '100%' }} onSubmit={this.handleSubmit}>
                             <Form.Group as={Row} >
-                                <Form.Control style={{ width: '50%' }} type="text" placeholder="Search by expense type, location and amount" value={this.state.amount} onChange={this.handleChange} />
+                                <Form.Control style={{ width: '50%' }} type="text" placeholder="Search by expense type, location and amount" name="search" value={this.state.amount} onChange={this.handleChange} />
                                 <Button className="ml-2" variant="secondary" type="submit">Search</Button>
                             </Form.Group>
                         </Form>
                     </Row>
                     <Row>
-
+                        <div>
+                            {this.state.results}
+                        </div>
                     </Row>
                 </Container>
 

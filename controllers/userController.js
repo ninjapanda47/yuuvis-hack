@@ -1,5 +1,6 @@
 const { UserModel } = require('../models')
 const { encryptPassword, comparePassword } = require('../util/bcrypt')
+const { getToken } = require('../util/token')
 
 module.exports = {
   addUser: async (req, res) => {
@@ -13,6 +14,8 @@ module.exports = {
       name, email, username, password, createdOn
     })
 
+    const token = await getToken(newUser)
+
     newUser.save(err => {
       if (err) {
         res.status(400).send({ 
@@ -22,8 +25,9 @@ module.exports = {
       }
       res.status(200).send({ 
         success: true, 
-        message: 'User added successfully', 
-        user: newUser 
+        message: 'User added successfully',
+        user: newUser,
+        token
       })
     })
   },
@@ -43,8 +47,10 @@ module.exports = {
     const validPassword = await comparePassword(password, user.password)
 
     if (validPassword) {
+      const token = await getToken(user)
       res.status(200).send({
         user,
+        token,
         success: true,
         message: 'User logged in successfully'
       })

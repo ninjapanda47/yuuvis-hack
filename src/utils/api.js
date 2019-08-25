@@ -1,10 +1,6 @@
 const api = "http://localhost:3001";
 
 let token = localStorage.token;
-if (!token)
-    token = localStorage.token = Math.random()
-        .toString(36)
-        .substr(-8);
 
 const headers = {
     Authorization: token
@@ -15,7 +11,6 @@ export const addUser = user =>
     fetch(`${api}/users`, {
         method: "POST",
         headers: {
-            ...headers,
             "Content-Type": "application/json"
         },
         body: JSON.stringify(user)
@@ -27,7 +22,6 @@ export const login = user =>
     fetch(`${api}/users/login`, {
         method: "POST",
         headers: {
-            ...headers,
             "Content-Type": "application/json"
         },
         body: JSON.stringify(user)
@@ -41,6 +35,17 @@ export const upload = item =>
         headers: {
             ...headers,
             "Content-Type": "application/json"
+        },
+        body: JSON.stringify(item)
+    }).then(res => res.json())
+        .then(data => data);
+
+//search
+export const search = item =>
+    fetch(`${api}/yuuvis/search`, {
+        method: "POST",
+        headers: {
+            ...headers
         },
         body: JSON.stringify(item)
     }).then(res => res.json())

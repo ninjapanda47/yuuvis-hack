@@ -23,12 +23,13 @@ export class SignUp extends Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit(event) {
+    handleSubmit = async event => {
         event.preventDefault();
         const user = this.state
-        itemAPI.addUser(user).then(data => { console.log(data) })
-        console.log(user)
-        this.props.history.push("/login")
+        const newUser = await itemAPI.addUser(user)
+        newUser.success ? this.props.isloggedin({ isloggedin: true, username: newUser.user.username }) : this.props.isloggedin({ isloggedin: false, username: null })
+        localStorage.token = newUser.token
+        this.props.history.push("/")
     }
 
     render() {
